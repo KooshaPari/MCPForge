@@ -1,3 +1,7 @@
+> **Phenotype Fork**: This is KooshaPari's fork of [isaacphi/mcp-language-server](https://github.com/isaacphi/mcp-language-server), used as the LSP backend for heliosCLI and AgilePlus code intelligence features in the Phenotype ecosystem.
+
+---
+
 # MCP Language Server
 
 [![Go Tests](https://github.com/isaacphi/mcp-language-server/actions/workflows/go.yml/badge.svg)](https://github.com/isaacphi/mcp-language-server/actions/workflows/go.yml)
