@@ -1,0 +1,17 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Thin caller that adopts the phenoShared reusable Rust CI workflow.
+# Pinned to HEAD SHA of KooshaPari/phenoShared@main until PR #85 merges and
+# exposes `.github/workflows/reusable/ci.yml`. Once merged, re-pin to a tag
+# (e.g. @v1) per the phenoShared release policy.
+jobs:
+  rust-ci:
+    uses: KooshaPari/phenoShared/.github/workflows/reusable/ci.yml@393519642656b8f6a2f459c22e0983a4725b7acb
+    with:
+      language: rust

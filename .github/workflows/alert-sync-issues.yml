@@ -1,0 +1,12 @@
+name: Alert Sync Issues
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  alert-sync:
+    uses: KooshaPari/phenoShared/.github/workflows/reusable/ci.yml@393519642656b8f6a2f459c22e0983a4725b7acb
+    with:
+      auto-label: auto-alert-sync
