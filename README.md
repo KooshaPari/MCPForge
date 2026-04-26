@@ -264,3 +264,7 @@ integrationtests/
 ```
 
 To update snapshots, run `UPDATE_SNAPSHOTS=true go test ./integrationtests/...`
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
