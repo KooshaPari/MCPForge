@@ -93,11 +93,10 @@ jobs:
           cache: true
 
       - name: Set up Rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
           components: rust-src
-          override: true
 
       - name: Install rust-analyzer
         run: rustup component add rust-analyzer
