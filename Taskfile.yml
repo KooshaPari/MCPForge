@@ -46,7 +46,14 @@ tasks:
   clean:
     desc: Remove generated artifacts and clear Go build/test cache entries
     cmds:
-      - "{{.GO}} clean -cache -testcache"
+      - |
+        for attempt in 1 2 3; do
+          {{.GO}} clean -cache -testcache && exit 0
+          if test "$attempt" -eq 3; then
+            exit 1
+          fi
+          sleep 1
+        done
       - task: clean:artifacts
 
   clean:artifacts:
