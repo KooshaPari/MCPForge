@@ -42,3 +42,7 @@ tasks:
           find integrationtests/test-output -depth -mindepth 1 -delete
           rmdir integrationtests/test-output
         fi
+      - |
+        if test -d integrationtests/snapshots; then
+          find integrationtests/snapshots -name "*.snap.diff" -delete
+        fi
