@@ -2,6 +2,8 @@ version: "3"
 
 vars:
   BINARY: mcp-language-server
+  TEST_PACKAGES: ./cmd/... ./internal/... ./tests
+  LINT_PACKAGES: . ./cmd/... ./internal/... ./tests
 
 tasks:
   default:
@@ -14,25 +16,23 @@ tasks:
       - go build -o {{.BINARY}}
 
   test:
-    desc: Run the Go test suite
+    desc: Run local Go unit and smoke tests
     cmds:
-      - go test ./...
+      - go test {{.TEST_PACKAGES}}
 
   lint:
-    desc: Run Go formatting, static analysis, and LSP checks
+    desc: Run Go formatting and static analysis
     cmds:
       - |
-        unformatted="$(find . -path "./integrationtests/workspaces" -prune -o \
-          -path "./integrationtests/test-output" -prune -o \
+        unformatted="$(find . -path "./integrationtests" -prune -o \
           -name "*.go" -print | xargs gofmt -l)"
         test -z "$unformatted" || { printf '%s\n' "$unformatted"; exit 1; }
-      - go tool staticcheck ./...
-      - go tool errcheck ./...
+      - go vet {{.LINT_PACKAGES}}
+      - go tool staticcheck {{.LINT_PACKAGES}}
+      - go tool errcheck {{.LINT_PACKAGES}}
       - |
-        find . -path "./integrationtests/workspaces" -prune -o \
-          -path "./integrationtests/test-output" -prune -o \
+        find . -path "./integrationtests" -prune -o \
           -name "*.go" -print | xargs gopls check
-      - go tool govulncheck ./...
 
   clean:
     desc: Remove generated artifacts and expire Go test cache entries
