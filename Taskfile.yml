@@ -1,168 +1,35 @@
 version: "3"
 
-vars:
-  PROJECT_LANGUAGE:
-    sh: |
-      if [ -f go.mod ]; then
-        printf go
-      elif [ -f package.json ]; then
-        printf node
-      elif [ -f pyproject.toml ] || [ -f requirements.txt ] || [ -f setup.py ]; then
-        printf python
-      elif [ -f Cargo.toml ]; then
-        printf rust
-      else
-        printf unknown
-      fi
-  NODE_PACKAGE_MANAGER:
-    sh: |
-      if [ -f pnpm-lock.yaml ]; then
-        printf pnpm
-      elif [ -f yarn.lock ]; then
-        printf yarn
-      elif [ -f bun.lockb ] || [ -f bun.lock ]; then
-        printf bun
-      else
-        printf npm
-      fi
-
 tasks:
   default:
-    desc: Run the build task
+    desc: Build the Go binary
     deps: [build]
 
   build:
-    desc: Build the project using the detected language toolchain
+    desc: Build mcp-language-server
     cmds:
-      - |
-        case "{{.PROJECT_LANGUAGE}}" in
-          go)
-            go build -o mcp-language-server
-            ;;
-          node)
-            case "{{.NODE_PACKAGE_MANAGER}}" in
-              pnpm)
-                pnpm run build --if-present
-                ;;
-              yarn)
-                yarn build
-                ;;
-              bun)
-                bun run build
-                ;;
-              *)
-                npm run build --if-present
-                ;;
-            esac
-            ;;
-          python)
-            python -m build
-            ;;
-          rust)
-            cargo build --all-targets
-            ;;
-          *)
-            echo "Unsupported project language: {{.PROJECT_LANGUAGE}}" >&2
-            exit 1
-            ;;
-        esac
+      - go build -o mcp-language-server
 
   test:
-    desc: Run the project test suite using the detected language toolchain
+    desc: Run the Go test suite
     cmds:
-      - |
-        case "{{.PROJECT_LANGUAGE}}" in
-          go)
-            go test ./...
-            ;;
-          node)
-            case "{{.NODE_PACKAGE_MANAGER}}" in
-              pnpm)
-                pnpm test --if-present
-                ;;
-              yarn)
-                yarn test
-                ;;
-              bun)
-                bun test
-                ;;
-              *)
-                npm test --if-present
-                ;;
-            esac
-            ;;
-          python)
-            pytest
-            ;;
-          rust)
-            cargo test --all-targets
-            ;;
-          *)
-            echo "Unsupported project language: {{.PROJECT_LANGUAGE}}" >&2
-            exit 1
-            ;;
-        esac
+      - go test ./...
 
   lint:
-    desc: Run common lint and static checks for the detected language toolchain
+    desc: Run Go formatting and static analysis checks
     cmds:
-      - |
-        case "{{.PROJECT_LANGUAGE}}" in
-          go)
-            gofmt -l .
-            test -z "$(gofmt -l .)"
-            go tool staticcheck ./...
-            go tool errcheck ./...
-            go tool govulncheck ./...
-            ;;
-          node)
-            case "{{.NODE_PACKAGE_MANAGER}}" in
-              pnpm)
-                pnpm exec eslint .
-                ;;
-              yarn)
-                yarn lint
-                ;;
-              bun)
-                bun run lint
-                ;;
-              *)
-                npm run lint --if-present
-                ;;
-            esac
-            ;;
-          python)
-            ruff check .
-            ;;
-          rust)
-            cargo fmt --check
-            cargo clippy --all-targets --all-features
-            ;;
-          *)
-            echo "Unsupported project language: {{.PROJECT_LANGUAGE}}" >&2
-            exit 1
-            ;;
-        esac
+      - gofmt -l .
+      - test -z "$(gofmt -l .)"
+      - go tool staticcheck ./...
+      - go tool errcheck ./...
 
   clean:
-    desc: Remove build and cache artifacts for the detected language toolchain
+    desc: Remove Go build and coverage artifacts
     cmds:
-      - |
-        case "{{.PROJECT_LANGUAGE}}" in
-          go)
-            go clean ./...
-            rm -f mcp-language-server coverage.out coverage.txt
-            ;;
-          node)
-            rm -rf node_modules dist build coverage .turbo .next
-            ;;
-          python)
-            rm -rf build dist .pytest_cache .ruff_cache .mypy_cache __pycache__
-            ;;
-          rust)
-            cargo clean
-            ;;
-          *)
-            rm -rf build dist coverage
-            ;;
-        esac
+      - go clean ./...
+      - task: clean:artifacts
+
+  clean:artifacts:
+    internal: true
+    cmds:
+      - find . -maxdepth 1 \( -name mcp-language-server -o -name coverage.out -o -name coverage.txt \) -delete
