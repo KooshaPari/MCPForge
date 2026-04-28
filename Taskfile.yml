@@ -31,9 +31,9 @@ tasks:
           -name "*.go" -print | xargs gopls check
 
   clean:
-    desc: Remove Go build, test cache, and coverage artifacts
+    desc: Remove generated artifacts and expire Go test cache entries
     cmds:
-      - go clean -cache -testcache
+      - go clean -testcache
       - task: clean:artifacts
 
   clean:artifacts:
