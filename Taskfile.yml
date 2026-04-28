@@ -37,7 +37,7 @@ tasks:
       - |
         case "{{.PROJECT_LANGUAGE}}" in
           go)
-            go build ./...
+            go build -o mcp-language-server
             ;;
           node)
             case "{{.NODE_PACKAGE_MANAGER}}" in
@@ -111,7 +111,9 @@ tasks:
           go)
             gofmt -l .
             test -z "$(gofmt -l .)"
-            go vet ./...
+            go tool staticcheck ./...
+            go tool errcheck ./...
+            go tool govulncheck ./...
             ;;
           node)
             case "{{.NODE_PACKAGE_MANAGER}}" in
@@ -149,8 +151,7 @@ tasks:
         case "{{.PROJECT_LANGUAGE}}" in
           go)
             go clean ./...
-            rm -rf bin/ dist/ build/ coverage.out mcp-language-server
-            find . -type d -name '__pycache__' -prune -exec rm -rf '{}' +
+            rm -f mcp-language-server coverage.out coverage.txt
             ;;
           node)
             rm -rf node_modules dist build coverage .turbo .next
