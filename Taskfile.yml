@@ -33,3 +33,8 @@ tasks:
     internal: true
     cmds:
       - find . -maxdepth 1 \( -name mcp-language-server -o -name coverage.out -o -name coverage.txt \) -delete
+      - |
+        if test -d integrationtests/test-output; then
+          find integrationtests/test-output -depth -mindepth 1 -delete
+          rmdir integrationtests/test-output
+        fi
