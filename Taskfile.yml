@@ -1,14 +1,17 @@
 version: "3"
 
+vars:
+  BINARY: mcp-language-server
+
 tasks:
   default:
     desc: Build the Go binary
     deps: [build]
 
   build:
-    desc: Build mcp-language-server
+    desc: Build the Go binary
     cmds:
-      - go build -o mcp-language-server
+      - go build -o {{.BINARY}}
 
   test:
     desc: Run the Go test suite
@@ -39,7 +42,7 @@ tasks:
   clean:artifacts:
     internal: true
     cmds:
-      - find . -maxdepth 1 \( -name mcp-language-server -o -name coverage.out -o -name coverage.txt \) -delete
+      - find . -maxdepth 1 \( -name {{.BINARY}} -o -name coverage.out -o -name coverage.txt \) -delete
       - |
         if test -d integrationtests/test-output; then
           find integrationtests/test-output -depth -mindepth 1 -delete
