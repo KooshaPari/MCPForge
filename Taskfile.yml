@@ -16,12 +16,16 @@ tasks:
       - go test ./...
 
   lint:
-    desc: Run Go formatting and static analysis checks
+    desc: Run Go formatting, static analysis, and LSP checks
     cmds:
       - gofmt -l .
       - test -z "$(gofmt -l .)"
       - go tool staticcheck ./...
       - go tool errcheck ./...
+      - |
+        find . -path "./integrationtests/workspaces" -prune -o \
+          -path "./integrationtests/test-output" -prune -o \
+          -name "*.go" -print | xargs gopls check
 
   clean:
     desc: Remove Go build and coverage artifacts
