@@ -2,7 +2,15 @@ version: "3"
 
 vars:
   BINARY: mcp-language-server
-  TEST_PACKAGES: ./cmd/... ./internal/... ./tests
+  TEST_PACKAGES: >-
+    ./cmd/...
+    ./internal/logging
+    ./internal/lsp
+    ./internal/protocol
+    ./internal/tools
+    ./internal/utilities
+    ./internal/watcher
+    ./tests
   LINT_PACKAGES: . ./cmd/... ./internal/... ./tests
 
 tasks:
