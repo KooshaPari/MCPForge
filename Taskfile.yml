@@ -44,9 +44,9 @@ tasks:
           -name "*.go" -print | xargs gopls check
 
   clean:
-    desc: Remove generated artifacts and expire Go build/test cache entries
+    desc: Remove generated artifacts and expire Go test cache entries
     cmds:
-      - "{{.GO}} clean -cache -testcache"
+      - "{{.GO}} clean -testcache"
       - task: clean:artifacts
 
   clean:artifacts:
