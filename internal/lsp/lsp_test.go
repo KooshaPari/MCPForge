@@ -153,7 +153,7 @@ func TestMessageID_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
 		data     string
-			expected interface{}
+		expected interface{}
 	}{
 		{
 			name:     "Null value",
