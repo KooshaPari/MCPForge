@@ -11,9 +11,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/isaacphi/mcp-language-server/internal/logging"
-	"github.com/isaacphi/mcp-language-server/internal/lsp"
-	"github.com/isaacphi/mcp-language-server/internal/watcher"
+	"github.com/KooshaPari/MCPForge/internal/logging"
+	"github.com/KooshaPari/MCPForge/internal/lsp"
+	"github.com/KooshaPari/MCPForge/internal/watcher"
 	"github.com/mark3labs/mcp-go/server"
 )
 

@@ -4,7 +4,7 @@ package lsp
 import (
 	"context"
 
-	"github.com/isaacphi/mcp-language-server/internal/protocol"
+	"github.com/KooshaPari/MCPForge/internal/protocol"
 )
 
 // Implementation sends a textDocument/implementation request to the LSP server.

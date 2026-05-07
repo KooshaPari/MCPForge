@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/isaacphi/mcp-language-server/internal/lsp"
-	"github.com/isaacphi/mcp-language-server/internal/protocol"
+	"github.com/KooshaPari/MCPForge/internal/lsp"
+	"github.com/KooshaPari/MCPForge/internal/protocol"
 )
 
 // GetHoverInfo retrieves hover information (type, documentation) for a symbol at the specified position
