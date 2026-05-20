@@ -32,7 +32,7 @@ jobs:
         run: curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
 
       - name: Install gopls
-        run: go install golang.org/x/tools/gopls@latest
+        run: go install golang.org/x/tools/gopls@v0.22.0
 
       - name: Run unit tests
         run: go test ./internal/...
@@ -54,7 +54,7 @@ jobs:
           cache: true
 
       - name: Install gopls
-        run: go install golang.org/x/tools/gopls@latest
+        run: go install golang.org/x/tools/gopls@v0.22.0
 
       - name: Run Go integration tests
         run: go test ./integrationtests/tests/go/...
@@ -97,7 +97,7 @@ jobs:
           cache: true
 
       - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8
         with:
           toolchain: stable
           components: rust-src
