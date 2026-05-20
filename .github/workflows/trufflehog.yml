@@ -3,6 +3,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -17,8 +20,8 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-go@0a12ed9e1a4ce4b1a02a5f2dd1e3a9c9e6c7f8b1
         with:
-          go-version: 'stable'
-      - run: go install github.com/trufflehog/trufflehog/v3@latest
+          go-version: '1.24'
+      - run: go install github.com/trufflesecurity/trufflehog/v3@v3.95.3
       - run: trufflehog github --only-verified --no-update
         env:
-          GH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
