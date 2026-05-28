@@ -17,7 +17,7 @@ permissions:
 jobs:
   unit-tests:
     name: Unit Tests and Code Quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -45,7 +45,7 @@ jobs:
 
   go-integration-tests:
     name: Go Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -64,7 +64,7 @@ jobs:
 
   python-integration-tests:
     name: Python Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -88,7 +88,7 @@ jobs:
 
   rust-integration-tests:
     name: Rust Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -116,7 +116,7 @@ jobs:
 
   typescript-integration-tests:
     name: TypeScript Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -140,7 +140,7 @@ jobs:
 
   clangd-integration-tests:
     name: Clangd Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 

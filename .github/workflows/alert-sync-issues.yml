@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   alert-sync:
-    uses: KooshaPari/phenoShared/.github/workflows/alert-sync-issues.yml@4b820a6d1eca7884e692e4ec4edf2b59732809cd
+    # Reusable workflow pinned to phenoShared main branch SHA (136def14).
+    uses: KooshaPari/phenoShared/.github/workflows/alert-sync-issues.yml@136def14b63e59da150eae1dc525677746098dd0
     with:
       auto-label: auto-alert-sync
