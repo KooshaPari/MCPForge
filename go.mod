@@ -1,4 +1,4 @@
-module github.com/isaacphi/mcp-language-server
+module github.com/KooshaPari/MCPForge
 
 go 1.24.0
 

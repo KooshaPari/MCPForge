@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/isaacphi/mcp-language-server/integrationtests/tests/clangd/internal"
-	"github.com/isaacphi/mcp-language-server/integrationtests/tests/common"
-	"github.com/isaacphi/mcp-language-server/internal/tools"
+	"github.com/KooshaPari/MCPForge/integrationtests/tests/clangd/internal"
+	"github.com/KooshaPari/MCPForge/integrationtests/tests/common"
+	"github.com/KooshaPari/MCPForge/internal/tools"
 )
 
 // TestFindReferences tests the FindReferences tool with C++ symbols

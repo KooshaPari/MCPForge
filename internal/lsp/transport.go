@@ -8,7 +8,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/isaacphi/mcp-language-server/internal/logging"
+	"github.com/KooshaPari/MCPForge/internal/logging"
 )
 
 // Create component-specific loggers
