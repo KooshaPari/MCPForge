@@ -16,6 +16,6 @@ on:
 # (e.g. @v1) per the phenoShared release policy.
 jobs:
   rust-ci:
-    uses: KooshaPari/phenoShared/.github/workflows/ci.yml@main
+    uses: KooshaPari/phenoShared/.github/workflows/ci.yml@30358ce629168f0e1ec3699706cb73d1f77cb751  # was: @main
     with:
       language: rust
