@@ -17,12 +17,12 @@ permissions:
 jobs:
   unit-tests:
     name: Unit Tests and Code Quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Set up Go
-        uses: actions/setup-go@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        uses: actions/setup-go@78961f6f84d799cd858575bb931c3e51d3b13290
         with:
           go-version: "1.24"
           check-latest: true
@@ -45,12 +45,12 @@ jobs:
 
   go-integration-tests:
     name: Go Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Set up Go
-        uses: actions/setup-go@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        uses: actions/setup-go@78961f6f84d799cd858575bb931c3e51d3b13290
         with:
           go-version: "1.24"
           check-latest: true
@@ -64,19 +64,19 @@ jobs:
 
   python-integration-tests:
     name: Python Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Set up Go
-        uses: actions/setup-go@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        uses: actions/setup-go@78961f6f84d799cd858575bb931c3e51d3b13290
         with:
           go-version: "1.24"
           check-latest: true
           cache: true
 
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@c8813ba1bc76ebf779b911ad8ffccbf2e449cb48
         with:
           python-version: "3.10"
 
@@ -88,19 +88,19 @@ jobs:
 
   rust-integration-tests:
     name: Rust Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Set up Go
-        uses: actions/setup-go@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        uses: actions/setup-go@78961f6f84d799cd858575bb931c3e51d3b13290
         with:
           go-version: "1.24"
           check-latest: true
           cache: true
 
       - name: Set up Rust
-        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
           components: rust-src
@@ -116,19 +116,19 @@ jobs:
 
   typescript-integration-tests:
     name: TypeScript Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Set up Go
-        uses: actions/setup-go@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        uses: actions/setup-go@78961f6f84d799cd858575bb931c3e51d3b13290
         with:
           go-version: "1.24"
           check-latest: true
           cache: true
 
       - name: Set up Node.js
-        uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65
+        uses: actions/setup-node@0355742c943ddb13ca8a6b700f824231caa91e75
         with:
           node-version: "20"
 
@@ -140,12 +140,12 @@ jobs:
 
   clangd-integration-tests:
     name: Clangd Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Set up Go
-        uses: actions/setup-go@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        uses: actions/setup-go@78961f6f84d799cd858575bb931c3e51d3b13290
         with:
           go-version: "1.24"
           check-latest: true
