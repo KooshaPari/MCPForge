@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fsnotify/fsnotify"
 	"github.com/KooshaPari/MCPForge/internal/logging"
 	"github.com/KooshaPari/MCPForge/internal/lsp"
 	"github.com/KooshaPari/MCPForge/internal/protocol"
+	"github.com/fsnotify/fsnotify"
 )
 
 // Create a logger for the watcher component

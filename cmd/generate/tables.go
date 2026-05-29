@@ -43,7 +43,7 @@ var goplsStar = map[prop]int{
 	{"TextDocumentClientCapabilities", "codeAction"}:          wantOpt,     // A.B.C.D
 	{"TextDocumentClientCapabilities", "completion"}:          wantOpt,     // A.B.C.D
 	{"TextDocumentClientCapabilities", "documentSymbol"}:      wantOpt,     // A.B.C.D
-	{"TextDocumentClientCapabilities", "publishDiagnostics"}:  wantOpt,     //A.B.C.D
+	{"TextDocumentClientCapabilities", "publishDiagnostics"}: wantOpt, // A.B.C.D
 	{"TextDocumentClientCapabilities", "semanticTokens"}:      wantOpt,     // A.B.C.D
 	{"TextDocumentContentChangePartial", "range"}:             wantOptStar, // == nil test
 	{"TextDocumentSyncOptions", "change"}:                     wantOpt,     // &constant

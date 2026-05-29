@@ -128,7 +128,7 @@ func TestHover(t *testing.T) {
 						t.Errorf("Expected hover info NOT to contain %q but it was found: %s", tt.unexpectedText, result)
 					}
 					// Skip snapshot because CI contains unique paths in output
-					//common.SnapshotTest(t, "typescript", "hover", tt.snapshotName, err.Error())
+					// common.SnapshotTest(t, "typescript", "hover", tt.snapshotName, err.Error())
 					return
 				}
 				t.Fatalf("GetHoverInfo failed: %v", err)

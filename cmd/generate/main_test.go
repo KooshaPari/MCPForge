@@ -13,7 +13,7 @@ import (
 )
 
 // These tests require the result of
-//"git clone https://github.com/microsoft/vscode-languageserver-node" in the HOME directory
+// "git clone https://github.com/microsoft/vscode-languageserver-node" in the HOME directory
 
 // this is not a test, but a way to get code coverage,
 // (in vscode, just run the test with  "go.coverOnSingleTest": true)
