@@ -1,3 +1,8 @@
+> **Work state:** MAINTENANCE · **Progress:** `███████▌░░ 75%`
+> Functional Go MCP server (mark3labs/mcp-go) exposing LSP semantic tools. Fork tracking upstream. · updated 2026-06-02
+
+---
+
 > **Phenotype Fork**: This is KooshaPari's fork of [isaacphi/mcp-language-server](https://github.com/isaacphi/mcp-language-server), used as the LSP backend for heliosCLI and AgilePlus code intelligence features in the Phenotype ecosystem.
 
 ---
