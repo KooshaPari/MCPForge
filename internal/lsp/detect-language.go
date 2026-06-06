@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/KooshaPari/MCPForge/internal/protocol"
+	"github.com/isaacphi/mcp-language-server/internal/protocol"
 )
 
 func DetectLanguageID(uri string) protocol.LanguageKind {

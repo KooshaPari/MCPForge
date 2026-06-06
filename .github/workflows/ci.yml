@@ -1,8 +1,4 @@
 name: CI
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 
 on:
   push:
@@ -14,11 +10,8 @@ on:
 # Pinned to HEAD SHA of KooshaPari/phenoShared@main until PR #85 merges and
 # exposes `.github/workflows/reusable/ci.yml`. Once merged, re-pin to a tag
 # (e.g. @v1) per the phenoShared release policy.
-permissions:
-  contents: read
-
 jobs:
   rust-ci:
-    uses: KooshaPari/phenoShared/.github/workflows/ci.yml@4b820a6d1eca7884e692e4ec4edf2b59732809cd
+    uses: KooshaPari/phenoShared/.github/workflows/ci.yml@72b9c6cbdb24c49189b0e7c7395d874830d1ed87 # pinned from @ref; org SHA may shift on new commits
     with:
       language: rust

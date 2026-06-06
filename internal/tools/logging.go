@@ -1,7 +1,7 @@
 package tools
 
 import (
-	"github.com/KooshaPari/MCPForge/internal/logging"
+	"github.com/isaacphi/mcp-language-server/internal/logging"
 )
 
 // Create a logger for the tools component

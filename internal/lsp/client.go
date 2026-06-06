@@ -13,7 +13,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/KooshaPari/MCPForge/internal/protocol"
+	"github.com/isaacphi/mcp-language-server/internal/protocol"
 )
 
 type Client struct {

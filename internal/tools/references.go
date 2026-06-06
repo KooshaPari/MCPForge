@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/KooshaPari/MCPForge/internal/lsp"
-	"github.com/KooshaPari/MCPForge/internal/protocol"
+	"github.com/isaacphi/mcp-language-server/internal/lsp"
+	"github.com/isaacphi/mcp-language-server/internal/protocol"
 )
 
 func FindReferences(ctx context.Context, client *lsp.Client, symbolName string) (string, error) {

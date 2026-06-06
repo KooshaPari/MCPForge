@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/KooshaPari/MCPForge/integrationtests/tests/common"
-	"github.com/KooshaPari/MCPForge/integrationtests/tests/typescript/internal"
-	"github.com/KooshaPari/MCPForge/internal/tools"
+	"github.com/isaacphi/mcp-language-server/integrationtests/tests/common"
+	"github.com/isaacphi/mcp-language-server/integrationtests/tests/typescript/internal"
+	"github.com/isaacphi/mcp-language-server/internal/tools"
 )
 
 // TestFindReferences tests the FindReferences tool with TypeScript symbols

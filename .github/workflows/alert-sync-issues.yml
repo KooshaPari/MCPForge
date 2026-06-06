@@ -5,11 +5,8 @@ on:
     - cron: "0 6 * * *"
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   alert-sync:
-    uses: KooshaPari/phenoShared/.github/workflows/alert-sync-issues.yml@4b820a6d1eca7884e692e4ec4edf2b59732809cd
+    uses: KooshaPari/phenoShared/.github/workflows/alert-sync-issues.yml@72b9c6cbdb24c49189b0e7c7395d874830d1ed87 # pinned from @ref; org SHA may shift on new commits
     with:
       auto-label: auto-alert-sync

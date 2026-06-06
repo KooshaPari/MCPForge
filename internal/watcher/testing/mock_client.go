@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/KooshaPari/MCPForge/internal/protocol"
-	"github.com/KooshaPari/MCPForge/internal/watcher"
+	"github.com/isaacphi/mcp-language-server/internal/protocol"
+	"github.com/isaacphi/mcp-language-server/internal/watcher"
 )
 
 // FileEvent represents a file event notification

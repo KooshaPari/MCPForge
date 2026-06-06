@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/KooshaPari/MCPForge/integrationtests/tests/common"
+	"github.com/isaacphi/mcp-language-server/integrationtests/tests/common"
 )
 
 // GetTestSuite returns a test suite for Python language server tests
