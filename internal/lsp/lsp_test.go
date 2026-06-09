@@ -463,3 +463,103 @@ func TestMessage_FullCycle(t *testing.T) {
 		t.Errorf("Params = %v, want %v", string(decoded.Params), string(original.Params))
 	}
 }
+
+// TestHandleWorkspaceConfiguration verifies that the workspace configuration
+// handler returns a single, empty configuration object regardless of the
+// params payload. This is a stable contract used by the LSP client to satisfy
+// `workspace/configuration` requests from the language server.
+func TestHandleWorkspaceConfiguration(t *testing.T) {
+	tests := []struct {
+		name   string
+		params json.RawMessage
+	}{
+		{
+			name:   "Empty object params",
+			params: json.RawMessage(`{}`),
+		},
+		{
+			name:   "Nil params",
+			params: nil,
+		},
+		{
+			name:   "Arbitrary params ignored",
+			params: json.RawMessage(`{"items": [{"section": "gopls"}]}`),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := HandleWorkspaceConfiguration(tt.params)
+			if err != nil {
+				t.Fatalf("HandleWorkspaceConfiguration() unexpected error: %v", err)
+			}
+			if result == nil {
+				t.Fatal("HandleWorkspaceConfiguration() returned nil result, want non-nil")
+			}
+
+			configs, ok := result.([]map[string]any)
+			if !ok {
+				t.Fatalf("HandleWorkspaceConfiguration() result type = %T, want []map[string]any", result)
+			}
+			if len(configs) != 1 {
+				t.Fatalf("HandleWorkspaceConfiguration() returned %d configs, want 1", len(configs))
+			}
+			if len(configs[0]) != 0 {
+				t.Errorf("HandleWorkspaceConfiguration() first config has %d keys, want 0", len(configs[0]))
+			}
+		})
+	}
+}
+
+// TestHandleServerMessage verifies that the server message handler
+// gracefully processes `window/showMessage` notifications for each supported
+// MessageType, and that malformed JSON does not cause a panic.
+func TestHandleServerMessage(t *testing.T) {
+	tests := []struct {
+		name   string
+		params string
+	}{
+		{
+			name:   "Error message",
+			params: `{"type": 1, "message": "boom"}`,
+		},
+		{
+			name:   "Warning message",
+			params: `{"type": 2, "message": "careful"}`,
+		},
+		{
+			name:   "Info message",
+			params: `{"type": 3, "message": "hello"}`,
+		},
+		{
+			name:   "Log message",
+			params: `{"type": 4, "message": "log entry"}`,
+		},
+		{
+			name:   "Debug message (default branch)",
+			params: `{"type": 5, "message": "debug"}`,
+		},
+		{
+			name:   "Unknown message type",
+			params: `{"type": 99, "message": "weird"}`,
+		},
+		{
+			name:   "Malformed JSON does not panic",
+			params: `{"type": 1,`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// HandleServerMessage has no return value; the contract is that
+			// it must not panic on any of the supported message types or on
+			// malformed input.
+			defer func() {
+				if r := recover(); r != nil {
+					t.Errorf("HandleServerMessage() panicked: %v", r)
+				}
+			}()
+			HandleServerMessage(json.RawMessage(tt.params))
+		})
+	}
+}
