@@ -1,12 +1,14 @@
 package logging
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"strings"
 	"sync"
+	"time"
 )
 
 // LogLevel represents the severity of a log message
@@ -72,6 +74,12 @@ var Writer io.Writer = os.Stderr
 
 // TestOutput can be set during tests to capture log output
 var TestOutput io.Writer
+
+// JSONOutput controls whether the logger emits structured JSON log records.
+// When false (the default), the logger emits a single line of plain text in the
+// form "[LEVEL][component] message". When true, the logger emits a single JSON
+// object per record, with the fields: time, level, component, message.
+var JSONOutput bool
 
 // logMu protects concurrent modifications to logging config
 var logMu sync.Mutex
@@ -192,6 +200,39 @@ func (l *ComponentLogger) log(level LogLevel, format string, v ...any) {
 	}
 
 	message := fmt.Sprintf(format, v...)
+
+	logMu.Lock()
+	jsonMode := JSONOutput
+	writer := Writer
+	testOut := TestOutput
+	logMu.Unlock()
+
+	if jsonMode {
+		// Structured (JSON) output: a single JSON object per line, written
+		// directly to the configured writer to avoid the standard log
+		// package's timestamp prefix corrupting the JSON payload.
+		entry := map[string]any{
+			"time":      time.Now().UTC().Format(time.RFC3339Nano),
+			"level":     level.String(),
+			"component": string(l.component),
+			"message":   message,
+		}
+		payload, err := json.Marshal(entry)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to marshal log entry: %v\n", err)
+			return
+		}
+		if _, err := fmt.Fprintln(writer, string(payload)); err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to write log: %v\n", err)
+		}
+		if testOut != nil {
+			if _, err := fmt.Fprintln(testOut, string(payload)); err != nil {
+				fmt.Fprintf(os.Stderr, "Failed to output log to test output: %v\n", err)
+			}
+		}
+		return
+	}
+
 	logMessage := fmt.Sprintf("[%s][%s] %s", level, l.component, message)
 
 	if err := log.Output(3, logMessage); err != nil {
@@ -199,8 +240,8 @@ func (l *ComponentLogger) log(level LogLevel, format string, v ...any) {
 	}
 
 	// Write to test output if set
-	if TestOutput != nil {
-		if _, err := fmt.Fprintln(TestOutput, logMessage); err != nil {
+	if testOut != nil {
+		if _, err := fmt.Fprintln(testOut, logMessage); err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to output log to test output: %v\n", err)
 		}
 	}
@@ -257,6 +298,15 @@ func SetWriter(w io.Writer) {
 
 	Writer = w
 	log.SetOutput(Writer)
+}
+
+// SetJSONOutput enables or disables structured (JSON) log output. Calling
+// SetJSONOutput repeatedly with the same value is safe and idempotent: the
+// observable state of the logger is unchanged after the second call.
+func SetJSONOutput(enabled bool) {
+	logMu.Lock()
+	defer logMu.Unlock()
+	JSONOutput = enabled
 }
 
 // SetupFileLogging configures logging to a file in addition to stderr
