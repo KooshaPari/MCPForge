@@ -1,7 +1,11 @@
 package lsp
 
 import (
+	"bufio"
+	"bytes"
 	"encoding/json"
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/KooshaPari/MCPForge/internal/protocol"
@@ -461,5 +465,189 @@ func TestMessage_FullCycle(t *testing.T) {
 	}
 	if string(decoded.Params) != string(original.Params) {
 		t.Errorf("Params = %v, want %v", string(decoded.Params), string(original.Params))
+	}
+}
+
+func TestWriteMessage(t *testing.T) {
+	tests := []struct {
+		name         string
+		msg          *Message
+		wantMethod   string
+		wantIDEquals any
+	}{
+		{
+			name: "Request message",
+			msg: &Message{
+				JSONRPC: "2.0",
+				ID:      &MessageID{Value: int32(7)},
+				Method:  "textDocument/definition",
+				Params:  json.RawMessage(`{"foo":"bar"}`),
+			},
+			wantMethod:   "textDocument/definition",
+			wantIDEquals: int32(7),
+		},
+		{
+			name: "Notification message",
+			msg: &Message{
+				JSONRPC: "2.0",
+				Method:  "textDocument/didOpen",
+				Params:  json.RawMessage(`{}`),
+			},
+			wantMethod:   "textDocument/didOpen",
+			wantIDEquals: nil,
+		},
+		{
+			name: "Response message",
+			msg: &Message{
+				JSONRPC: "2.0",
+				ID:      &MessageID{Value: "req-1"},
+				Result:  json.RawMessage(`{"ok":true}`),
+			},
+			wantMethod:   "",
+			wantIDEquals: "req-1",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var buf bytes.Buffer
+			if err := WriteMessage(&buf, tt.msg); err != nil {
+				t.Fatalf("WriteMessage() error = %v", err)
+			}
+
+			wire := buf.Bytes()
+			if len(wire) == 0 {
+				t.Fatalf("WriteMessage() wrote 0 bytes")
+			}
+
+			// Header must start with Content-Length and end with \r\n\r\n
+			if !strings.HasPrefix(string(wire), "Content-Length: ") {
+				t.Fatalf("WriteMessage() output missing Content-Length prefix: %q", string(wire))
+			}
+
+			sep := []byte("\r\n\r\n")
+			idx := bytes.Index(wire, sep)
+			if idx < 0 {
+				t.Fatalf("WriteMessage() output missing CRLFCRLF separator: %q", string(wire))
+			}
+
+			header := string(wire[:idx])
+			var contentLength int
+			n, err := fmt.Sscanf(header, "Content-Length: %d", &contentLength)
+			if err != nil || n != 1 {
+				t.Fatalf("failed to parse Content-Length from %q: n=%d err=%v", header, n, err)
+			}
+
+			body := wire[idx+len(sep):]
+			if len(body) != contentLength {
+				t.Errorf("Content-Length header (%d) does not match body length (%d)", contentLength, len(body))
+			}
+
+			// Body must be valid JSON for the Message
+			var decoded Message
+			if err := json.Unmarshal(body, &decoded); err != nil {
+				t.Fatalf("WriteMessage() body is not valid JSON: %v; body=%s", err, string(body))
+			}
+
+			if decoded.Method != tt.wantMethod {
+				t.Errorf("decoded.Method = %q, want %q", decoded.Method, tt.wantMethod)
+			}
+
+			switch want := tt.wantIDEquals.(type) {
+			case nil:
+				if decoded.ID != nil && decoded.ID.Value != nil {
+					t.Errorf("decoded.ID = %v, want nil", decoded.ID.Value)
+				}
+			case int32:
+				if decoded.ID == nil || decoded.ID.Value != want {
+					t.Errorf("decoded.ID = %v, want %v", decoded.ID, want)
+				}
+			case string:
+				if decoded.ID == nil || decoded.ID.Value != want {
+					t.Errorf("decoded.ID = %v, want %v", decoded.ID, want)
+				}
+			}
+		})
+	}
+}
+
+func TestReadMessage(t *testing.T) {
+	tests := []struct {
+		name        string
+		msg         *Message
+		wantMethod  string
+		wantIDValue any
+	}{
+		{
+			name: "Request message",
+			msg: &Message{
+				JSONRPC: "2.0",
+				ID:      &MessageID{Value: int32(99)},
+				Method:  "initialize",
+				Params:  json.RawMessage(`{"rootUri":"file:///tmp"}`),
+			},
+			wantMethod:  "initialize",
+			wantIDValue: int32(99),
+		},
+		{
+			name: "Notification message",
+			msg: &Message{
+				JSONRPC: "2.0",
+				Method:  "exit",
+			},
+			wantMethod:  "exit",
+			wantIDValue: nil,
+		},
+		{
+			name: "Response message",
+			msg: &Message{
+				JSONRPC: "2.0",
+				ID:      &MessageID{Value: "abc"},
+				Result:  json.RawMessage(`{"capabilities":{}}`),
+			},
+			wantMethod:  "",
+			wantIDValue: "abc",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// First frame the message as WriteMessage would, then feed it
+			// to ReadMessage and verify it round-trips.
+			var framed bytes.Buffer
+			if err := WriteMessage(&framed, tt.msg); err != nil {
+				t.Fatalf("setup: WriteMessage() error = %v", err)
+			}
+
+			decoded, err := ReadMessage(bufio.NewReader(&framed))
+			if err != nil {
+				t.Fatalf("ReadMessage() error = %v", err)
+			}
+			if decoded == nil {
+				t.Fatal("ReadMessage() returned nil message without error")
+			}
+
+			if decoded.JSONRPC != "2.0" {
+				t.Errorf("decoded.JSONRPC = %q, want %q", decoded.JSONRPC, "2.0")
+			}
+			if decoded.Method != tt.wantMethod {
+				t.Errorf("decoded.Method = %q, want %q", decoded.Method, tt.wantMethod)
+			}
+
+			switch want := tt.wantIDValue.(type) {
+			case nil:
+				if decoded.ID != nil && decoded.ID.Value != nil {
+					t.Errorf("decoded.ID = %v, want nil", decoded.ID.Value)
+				}
+			case int32:
+				if decoded.ID == nil || decoded.ID.Value != want {
+					t.Errorf("decoded.ID = %v, want %v", decoded.ID, want)
+				}
+			case string:
+				if decoded.ID == nil || decoded.ID.Value != want {
+					t.Errorf("decoded.ID = %v, want %v", decoded.ID, want)
+				}
+			}
+		})
 	}
 }
