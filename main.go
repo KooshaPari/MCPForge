@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log/slog"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -16,6 +17,16 @@ import (
 	"github.com/KooshaPari/MCPForge/internal/watcher"
 	"github.com/mark3labs/mcp-go/server"
 )
+
+// init configures the default slog logger to emit JSON-formatted structured
+// logs to stderr at INFO level. This wires MCPForge to Go's structured
+// logging (slog) so that any slog.Info / slog.Error / slog.Warn / slog.Debug
+// call throughout the program is rendered as a single JSON object per record
+// with stable, machine-parseable key/value attributes.
+func init() {
+	handler := slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelInfo})
+	slog.SetDefault(slog.New(handler))
+}
 
 // Create a logger for the core component
 var coreLogger = logging.NewLogger(logging.Core)

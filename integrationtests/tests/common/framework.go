@@ -3,7 +3,7 @@ package common
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -116,7 +116,7 @@ func (ts *TestSuite) Setup() error {
 
 	// Clear file if it already existed
 	if err := os.Remove(ts.logFile); err != nil {
-		log.Printf("failed to remove old log file: %s", ts.logFile)
+		slog.Error("failed to remove old log file", "log_file", ts.logFile, "err", err)
 	}
 
 	// Configure logging to write to the file
