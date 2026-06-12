@@ -1,40 +1,63 @@
-# Binary
-mcp-language-server
+# Phenotype-org standard .gitignore — Python
+# Source: https://github.com/KooshaPari/phenotype-tooling/blob/main/templates/gitignore-python
 
-# Test output
-test-output/
-*.diff
-integrationtests/workspaces/clangd/compile_commands.json
-integrationtests/workspaces/clangd/src/*.o
-integrationtests/workspaces/clangd/clean_program
-integrationtests/workspaces/clangd/program
-integrationtests/workspaces/clangd/.cache
-
-
-# Temporary files
-*~
-
-CLAUDE.md*
-.mcp.json
-.goosehints
-
-# Local AgilePlus state
-.agileplus/
-
-# ===== Standard auto-generated hygiene ignores (do not edit manually) =====
-.DS_Store
-.env
-.env.*
-!.env.example
-node_modules/
-target/
-dist/
-build/
-coverage/
-.pytest_cache/
+# Byte-compiled / optimized
 __pycache__/
-.mypy_cache/
-.ruff_cache/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
 .venv/
 venv/
-# ===== End standard hygiene ignores =====
+ENV/
+env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+pip-wheel-metadata/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+
+# Editor
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Repo-specific additions (preserved from prior .gitignore)
+!.env.example
+.agileplus
+.env
+.env.*
+.goosehints
+.mcp.json
+*.diff
+*~
+CLAUDE.md*
+coverage
+integrationtests/workspaces/clangd/.cache
+integrationtests/workspaces/clangd/clean_program
+integrationtests/workspaces/clangd/compile_commands.json
+integrationtests/workspaces/clangd/program
+integrationtests/workspaces/clangd/src/*.o
+mcp-language-server
+node_modules
+target
+test-output
