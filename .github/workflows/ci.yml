@@ -7,8 +7,16 @@ concurrency:
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '**.md'
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '**.md'
 
 # Thin caller that adopts the phenoShared reusable Rust CI workflow.
 # Pinned to HEAD SHA of KooshaPari/phenoShared@main until PR #85 merges and
