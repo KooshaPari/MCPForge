@@ -3,5 +3,11 @@ name = "test-workspace"
 version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/KooshaPari/PhenoProc"
+description = "test workspace — Phenotype infrastructure crate (PhenoProc)"
+documentation = "https://docs.rs/test-workspace"
+keywords = ["phenotype", "pheno-proc", "test"]
+categories = ["development-tools::testing"]
+authors = ["kooshapari"]
 
 [dependencies]
