@@ -1,17 +1,10 @@
-> **Phenotype Fork**: This is KooshaPari's fork of [isaacphi/mcp-language-server](https://github.com/isaacphi/mcp-language-server), used as the LSP backend for heliosCLI and AgilePlus code intelligence features in the Phenotype ecosystem.
-
----
-
 # MCPForge
 
-[![Go Tests](https://github.com/KooshaPari/MCPForge/actions/workflows/go.yml/badge.svg)](https://github.com/KooshaPari/MCPForge/actions/workflows/go.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/KooshaPari/MCPForge)](https://goreportcard.com/report/github.com/KooshaPari/MCPForge)
-[![GoDoc](https://pkg.go.dev/badge/github.com/isaacphi/mcp-language-server)](https://pkg.go.dev/github.com/isaacphi/mcp-language-server)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/github.com/KooshaPari/MCPForge)](https://github.com/KooshaPari/MCPForge/blob/main/go.mod)
-[![AI Slop Inside](https://sladge.net/badge.svg)](https://sladge.net)
+> **Fork attribution:** MCPForge is KooshaPari's fork of [isaacphi/mcp-language-server](https://github.com/isaacphi/mcp-language-server). The native GitHub fork relationship preserves upstream provenance.
 
-This is an [MCP](https://modelcontextprotocol.io/introduction) server that runs and exposes a [language server](https://microsoft.github.io/language-server-protocol/) to LLMs. Not a language server for MCP, whatever that would be.
+MCPForge exposes language-server capabilities to MCP-enabled clients for semantic code navigation, including definitions, references, rename operations, and diagnostics.
 
+## Demo
 ## Demo
 
 `mcp-language-server` helps MCP enabled clients navigate codebases more easily by giving them access semantic tools like get definition, references, rename, and diagnostics.
