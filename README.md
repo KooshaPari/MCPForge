@@ -2,6 +2,8 @@
 
 > **Fork attribution:** MCPForge is KooshaPari's fork of [isaacphi/mcp-language-server](https://github.com/isaacphi/mcp-language-server). The native GitHub fork relationship preserves upstream provenance.
 
+[![AI slop inside](https://sladge.net/badge.svg)](https://sladge.net) [![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/KooshaPari/MCPForge/total)](https://github.com/KooshaPari/MCPForge/releases)
+
 MCPForge exposes language-server capabilities to MCP-enabled clients for semantic code navigation, including definitions, references, rename operations, and diagnostics.
 
 ## Demo
